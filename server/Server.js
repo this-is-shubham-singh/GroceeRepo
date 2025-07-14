@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import dbConnection from "./config/dbConnect.js";
 import userRouter from "./routes/userRoute.js";
+import cookieParser from "cookie-parser";
 dotenv.config();
 const app = express();
 
@@ -11,7 +12,8 @@ const port = process.env.PORT || 3000;
 dbConnection();
 
 // setup middlewares
-app.get(express.json());
+app.use(express.json());
+app.use(cookieParser());
 
 // mouting routes
 app.use("/api/user", userRouter);
@@ -22,5 +24,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("server started");
+  console.log("server running at" + port);
 });
