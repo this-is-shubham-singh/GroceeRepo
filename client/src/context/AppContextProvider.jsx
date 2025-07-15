@@ -1,11 +1,16 @@
 import { createContext, useEffect, useState } from "react";
 import { dummyProducts } from "../assets/assets";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
+
+// set global base url for axios
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
+axios.defaults.withCredentials = true;
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [cartItems, setCartItems] = useState({});
   const [cartItemsInArray, setCartItemsInArray] = useState([]);
@@ -13,8 +18,15 @@ const AppContextProvider = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    setSearchValue("")
+    setSearchValue("");
   }, [location.pathname]);
+
+  // keep authenticating user
+  const authenticateUser = async () => {
+    const { data } = await axios.get("user/userAuth");
+
+    setUser(data.userData);
+  };
 
   const addcartItemToArray = (currentData) => {
     let arr = [];
@@ -97,9 +109,13 @@ const AppContextProvider = ({ children }) => {
     return count;
   };
 
+  useEffect(() => {
+    authenticateUser();
+  }, []);
+
   let value = {
-    isLoggedIn,
-    setIsLoggedIn,
+    user,
+    setUser,
     showLoginForm,
     setShowLoginForm,
     addToCart,
@@ -110,6 +126,7 @@ const AppContextProvider = ({ children }) => {
     addcartItemToArray,
     searchValue,
     setSearchValue,
+    axios,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

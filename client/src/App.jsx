@@ -17,15 +17,26 @@ import SellerAddProducts from "./components/seller/SellerAddProducts";
 import SellerProductsList from "./components/seller/SellerProductsList";
 import SellerOrders from "./components/seller/SellerOrders";
 import UserLayout from "./components/UserLayout";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const { showLoginForm } = useContext(AppContext);
   const location = useLocation();
 
-  console.log(location.pathname);
-
   return (
     <div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark" // or "light"
+      />
       {!location.pathname.startsWith("/seller") && <Navbar />}
       {showLoginForm && <Login />}
       <Routes>

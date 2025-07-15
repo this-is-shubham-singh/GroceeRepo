@@ -1,12 +1,37 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContextProvider";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [state, setState] = useState("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { showLoginForm, setShowLoginForm } = useContext(AppContext);
+  const { showLoginForm, setShowLoginForm, user, setUser, axios } =
+    useContext(AppContext);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      const { data } = await axios.post(`user/${state}`, {
+        name,
+        email,
+        password,
+      });
+
+      if (data.success == false) {
+        toast.error(data.message);
+        return;
+      }
+
+      setUser(true);
+      toast.success(data.message);
+      setShowLoginForm(false);
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
 
   return (
     <div
@@ -15,6 +40,7 @@ const Login = () => {
     >
       <form
         onClick={(e) => e.stopPropagation()}
+        onSubmit={(e) => handleSubmit(e)}
         className="flex flex-col gap-4 p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white"
       >
         <p className="text-2xl font-medium m-auto">

@@ -1,22 +1,39 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContextProvider";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const {
-    isLoggedIn,
-    setIsLoggedIn,
+    user,
+    setUser,
     setShowLoginForm,
     countCartItems,
     setSearchValue,
     searchValue,
+    axios,
   } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     navigate("/products");
     setSearchValue(e.target.value);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const { data } = await axios.post("user/logout");
+
+      if (data.success == false) {
+        toast.error(data.message);
+        return;
+      }
+      toast.success(data.message);
+      setUser(false);
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   return (
@@ -106,7 +123,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        {!isLoggedIn ? (
+        {!user ? (
           <button
             onClick={() => setShowLoginForm(true)}
             className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
@@ -130,7 +147,7 @@ const Navbar = () => {
               </button>
               <button
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
-                onClick={() => setIsLoggedIn(false)}
+                onClick={() => handleLogout()}
               >
                 Logout
               </button>
@@ -174,7 +191,7 @@ const Navbar = () => {
         <a onClick={() => setOpen(close)} href="#" className="block">
           Contact
         </a>
-        {!isLoggedIn ? (
+        {!user ? (
           <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
             Login
           </button>
