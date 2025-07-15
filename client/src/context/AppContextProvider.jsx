@@ -16,6 +16,7 @@ const AppContextProvider = ({ children }) => {
   const [cartItemsInArray, setCartItemsInArray] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const location = useLocation();
+  const [seller, setSeller] = useState(false);
 
   useEffect(() => {
     setSearchValue("");
@@ -23,9 +24,21 @@ const AppContextProvider = ({ children }) => {
 
   // keep authenticating user
   const authenticateUser = async () => {
-    const { data } = await axios.get("user/userAuth");
+    try {
+      const { data } = await axios.get("user/userAuth");
+      setUser(data.userData);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
 
-    setUser(data.userData);
+  const authenticateSeller = async () => {
+    try {
+      const { data } = await axios.get("seller/sellerAuth");
+      setSeller(data.success);
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   const addcartItemToArray = (currentData) => {
@@ -111,6 +124,7 @@ const AppContextProvider = ({ children }) => {
 
   useEffect(() => {
     authenticateUser();
+    authenticateSeller();
   }, []);
 
   let value = {
@@ -127,6 +141,8 @@ const AppContextProvider = ({ children }) => {
     searchValue,
     setSearchValue,
     axios,
+    seller,
+    setSeller,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

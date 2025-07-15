@@ -19,6 +19,8 @@ import SellerOrders from "./components/seller/SellerOrders";
 import UserLayout from "./components/UserLayout";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import SellerLoginRedirect from "./components/seller/SellerLoginRedirect";
+import SellerProtectedRoute from "./components/seller/SellerProtectedRoute";
 
 const App = () => {
   const { showLoginForm } = useContext(AppContext);
@@ -51,14 +53,26 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/addAddress" element={<AddAddress />} />
           <Route path="/myOrders" element={<MyOrders />} />
-          <Route path="/seller/login" element={<SellerLogin />} />
         </Route>
 
         {/* seller pages and components  */}
-        <Route path="/seller" element={<SellerHome />}>
-          <Route path="addProducts" element={<SellerAddProducts />} />
-          <Route path="productList" element={<SellerProductsList />} />
-          <Route path="orders" element={<SellerOrders />} />
+
+        {/* for single protected route  */}
+        <Route
+          path="seller/login"
+          element={
+            <SellerLoginRedirect>
+              <SellerLogin />
+            </SellerLoginRedirect>
+          }
+        />
+
+        <Route path="/seller" element={<SellerProtectedRoute />}>
+          <Route element={<SellerHome />}>
+            <Route path="addProducts" element={<SellerAddProducts />} />
+            <Route path="productList" element={<SellerProductsList />} />
+            <Route path="orders" element={<SellerOrders />} />
+          </Route>
         </Route>
       </Routes>
       {!location.pathname.startsWith("/seller") && <Footer />}

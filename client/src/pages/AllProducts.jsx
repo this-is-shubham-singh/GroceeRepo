@@ -13,8 +13,6 @@ const AllProducts = () => {
   function searchProduct() {
     let arr = [...dummyProducts];
 
-    console.log(searchValue);
-
     if (searchValue) {
       arr = dummyProducts.filter((val, index) => {
         return (

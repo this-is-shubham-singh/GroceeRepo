@@ -62,7 +62,7 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
-        <NavLink to={'/seller'}
+        <NavLink to={'/seller/addProducts'}
           className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer`}
         >
           Seller

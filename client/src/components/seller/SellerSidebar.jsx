@@ -1,7 +1,22 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { AppContext } from "../../context/AppContextProvider";
+import { toast } from "react-toastify";
 
 const SellerSidebar = () => {
+  const { axios, setSeller } = useContext(AppContext);
+
+  const handleLogout = async () => {
+    try {
+      const { data } = await axios.post("seller/sellerLogout");
+      setSeller(false);
+      toast.success(data.success);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   const dashboardicon = (
     <svg
       className="w-6 h-6"
@@ -78,7 +93,11 @@ const SellerSidebar = () => {
         </NavLink>
         <div className="flex items-center gap-5 text-gray-500">
           <p>Hi! Admin</p>
-          <button className="border rounded-full text-sm px-4 py-1">
+          <button
+            style={{ cursor: "pointer" }}
+            onClick={() => handleLogout()}
+            className="border rounded-full text-sm px-4 py-1"
+          >
             Logout
           </button>
         </div>
