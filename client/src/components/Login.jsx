@@ -25,7 +25,9 @@ const Login = () => {
         return;
       }
 
-      setUser(true);
+      if (state == "login") {
+        setUser(true);
+      }
       toast.success(data.message);
       setShowLoginForm(false);
     } catch (e) {

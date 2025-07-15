@@ -4,6 +4,8 @@ import dbConnection from "./config/dbConnect.js";
 import userRouter from "./routes/userRoute.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import sellerRouter from "./routes/sellerRoutes.js";
+
 dotenv.config();
 const app = express();
 
@@ -24,6 +26,7 @@ app.use(
 
 // mouting routes
 app.use("/api/user", userRouter);
+app.use("/api/seller", sellerRouter);
 
 // dummy route
 app.get("/", (req, res) => {

@@ -62,6 +62,11 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
+        <NavLink to={'/seller'}
+          className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer`}
+        >
+          Seller
+        </NavLink>
         <NavLink to={"/"}>Home</NavLink>
         <NavLink to={"/products"} onClick={() => setSearchValue("")}>
           All Products
@@ -182,15 +187,15 @@ const Navbar = () => {
           open ? "flex" : "hidden"
         } absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}
       >
-        <a onClick={() => setOpen(close)} href="#" className="block">
+        <NavLink onClick={() => setOpen(close)} className="block">
           Home
-        </a>
-        <a onClick={() => setOpen(close)} href="#" className="block">
+        </NavLink>
+        <NavLink onClick={() => setOpen(close)} className="block">
           About
-        </a>
-        <a onClick={() => setOpen(close)} href="#" className="block">
+        </NavLink>
+        <NavLink onClick={() => setOpen(close)} className="block">
           Contact
-        </a>
+        </NavLink>
         {!user ? (
           <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
             Login
