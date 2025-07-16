@@ -1,42 +1,41 @@
-import { cloneElement, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../app.css";
-import { dummyProducts } from "../assets/assets";
 import ProductCard from "../components/ProductCard";
 import { AppContext } from "../context/AppContextProvider";
 
 const AllProducts = () => {
-  const { searchValue, setSearchValue } = useContext(AppContext);
+  const { searchValue, allProducts, loading } = useContext(AppContext);
 
-  const [data, setData] = useState(dummyProducts);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
 
-  function searchProduct() {
-    let arr = [...dummyProducts];
-
-    if (searchValue) {
-      arr = dummyProducts.filter((val, index) => {
-        return (
-          val.name.toLowerCase().startsWith(searchValue) ||
-          val.category.toLowerCase().startsWith(searchValue)
-        );
-      });
+  useEffect(() => {
+    if (Array.isArray(allProducts) && allProducts.length > 0) {
+      setData(allProducts);
     }
-
-    setData(arr);
-  }
+  }, [allProducts]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      searchProduct();
-      setLoading(false);
-    }, 1000);
+      const search = searchValue?.toLowerCase();
 
-    setLoading(true);
+      // If there's no search input, show all products
+      if (!search) {
+        setData(allProducts);
+        return;
+      }
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [searchValue]);
+      // you are here it means search value exist
+      const filtered = allProducts.filter((val) => {
+        const name = val.name?.toLowerCase() || "";
+        const category = val.category?.toLowerCase() || "";
+        return name.startsWith(search) || category.startsWith(search);
+      });
+
+      setData(filtered);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchValue, allProducts]);
 
   return (
     <div className="categories-container">
@@ -45,7 +44,7 @@ const AllProducts = () => {
         "loading..."
       ) : (
         <div className="categories-row">
-          {data.map((cat) => (
+          {data?.map((cat) => (
             <ProductCard product={cat} />
           ))}
         </div>

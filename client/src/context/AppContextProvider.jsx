@@ -17,6 +17,8 @@ const AppContextProvider = ({ children }) => {
   const [searchValue, setSearchValue] = useState("");
   const location = useLocation();
   const [seller, setSeller] = useState(false);
+  const [allProducts, setAllProducts] = useState();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setSearchValue("");
@@ -45,7 +47,7 @@ const AppContextProvider = ({ children }) => {
     let arr = [];
 
     for (const key in currentData) {
-      const item = dummyProducts.find((val, ind) => {
+      const item = allProducts.find((val, ind) => {
         return val._id == key;
       });
 
@@ -122,10 +124,32 @@ const AppContextProvider = ({ children }) => {
     return count;
   };
 
+  const fetchAllProductsFromDb = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get("product/getAllProducts");
+
+      // console.log(data.productData);
+      let arr = [...dummyProducts, ...data.productData];
+
+      setAllProducts(arr);
+      setLoading(false);
+
+      console.log(arr)
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllProductsFromDb();
+  }, []);
+
   useEffect(() => {
     authenticateUser();
     authenticateSeller();
   }, []);
+
 
   let value = {
     user,
@@ -143,6 +167,10 @@ const AppContextProvider = ({ children }) => {
     axios,
     seller,
     setSeller,
+    allProducts,
+    setAllProducts,
+    loading,
+    setLoading,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

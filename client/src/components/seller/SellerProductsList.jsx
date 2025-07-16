@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContextProvider";
+
 const SellerProductsList = () => {
+  const { allProducts } = useContext(AppContext);
+
   const products = [
     {
       name: "Nike Pegasus 41 shoes",
@@ -43,11 +48,15 @@ const SellerProductsList = () => {
               </tr>
             </thead>
             <tbody className="text-sm text-gray-500">
-              {products.map((product, index) => (
+              {allProducts?.map((product, index) => (
                 <tr key={index} className="border-t border-gray-500/20">
                   <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
                     <div className="border border-gray-300 rounded overflow-hidden">
-                      <img src={product.image} alt="Product" className="w-16" />
+                      <img
+                        src={product.image[0]}
+                        alt="Product"
+                        className="w-16"
+                      />
                     </div>
                     <span className="truncate max-sm:hidden w-full">
                       {product.name}

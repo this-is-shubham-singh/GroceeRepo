@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { dummyProducts } from "../assets/assets";
 import { AppContext } from "../context/AppContextProvider";
 
 const Product = () => {
   const { productId } = useParams();
   const [productData, setProductData] = useState();
-  const { addToCart } = useContext(AppContext);
+  const { addToCart, allProducts } = useContext(AppContext);
   const navigate = useNavigate();
 
   const getProductData = () => {
-    const data = dummyProducts.find((val, ind) => {
+    const data = allProducts.find((val, ind) => {
       return val._id === productId;
     });
 
@@ -18,8 +17,12 @@ const Product = () => {
   };
 
   useEffect(() => {
+    if (!allProducts) {
+      return;
+    }
+
     getProductData();
-  }, [productId]);
+  }, [productId, allProducts]);
 
   // console.log(productData);
 
@@ -107,9 +110,13 @@ const Product = () => {
 
             <p className="text-base font-medium mt-6">About Product</p>
             <ul className="list-disc ml-4 text-gray-500/70">
-              {productData.description.map((desc, index) => (
-                <li key={index}>{desc}</li>
-              ))}
+              {Array.isArray(productData.description) ? (
+                productData.description.map((desc, index) => (
+                  <li key={index}>{desc}</li>
+                ))
+              ) : (
+                <li>{productData.description}</li>
+              )}
             </ul>
 
             <div className="flex items-center mt-10 gap-4 text-base">

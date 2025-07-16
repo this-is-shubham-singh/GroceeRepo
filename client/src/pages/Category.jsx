@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../app.css";
-import { dummyProducts } from "../assets/assets";
 import ProductCard from "../components/ProductCard";
 import { useParams } from "react-router-dom";
+import { AppContext } from "../context/AppContextProvider";
 
 const Category = () => {
   const [categoryData, setCategoryData] = useState([]);
+  const { allProducts, loading } = useContext(AppContext);
 
   const { categoryId } = useParams();
 
   const getCategoryData = () => {
-    const arr = dummyProducts.filter((val, ind) => {
+    const arr = allProducts?.filter((val, ind) => {
       return val.category === categoryId;
     });
 
@@ -18,8 +19,12 @@ const Category = () => {
   };
 
   useEffect(() => {
+    if (!allProducts) {
+      return;
+    }
+
     getCategoryData();
-  }, []);
+  }, [allProducts]);
 
   return (
     <div className="categories-container">

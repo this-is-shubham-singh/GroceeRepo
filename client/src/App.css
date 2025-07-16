@@ -444,3 +444,7 @@
     text-align: left;
   }
 }
+
+.borderBlue {
+  border: 2px solid blue;
+}
