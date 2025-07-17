@@ -1,16 +1,42 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContextProvider";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [showAddress, setShowAddress] = useState(false);
-  const { cartItemsInArray, addcartItemToArray, deleteFromCart, cartItems } =
-    useContext(AppContext);
+  const {
+    user,
+    cartItemsInArray,
+    addcartItemToArray,
+    deleteFromCart,
+    cartItems,
+    axios,
+  } = useContext(AppContext);
   const navigate = useNavigate();
+  const [allUserAddresses, setAllUserAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState({});
 
-  // useEffect(() => {
-  //   addcartItemToArray();
-  // }, [cartItems]);
+  const getAllAddresses = async () => {
+    if (user) {
+      try {
+        const { data } = await axios("address/getAllAddress");
+
+        if (!data.success) {
+          return toast.error(e.message);
+        }
+
+        // console.log(data.allAddresses)
+        setAllUserAddresses(data.allAddresses);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAllAddresses();
+  }, [user]);
 
   return (
     <div className="flex flex-col md:flex-row py-16 max-w-6xl w-full px-6 mx-auto">
@@ -113,7 +139,17 @@ const Cart = () => {
         <div className="mb-6">
           <p className="text-sm font-medium uppercase">Delivery Address</p>
           <div className="relative flex justify-between items-start mt-2">
-            <p className="text-gray-500">No address found</p>
+            <p className="text-gray-500">
+              {Object.keys(selectedAddress).length === 0
+                ? "No address Found"
+                : selectedAddress?.street +
+                  ", " +
+                  selectedAddress?.city +
+                  ", " +
+                  selectedAddress?.state +
+                  ", " +
+                  selectedAddress?.country}
+            </p>
             <button
               onClick={() => setShowAddress(!showAddress)}
               className="text-indigo-500 hover:underline cursor-pointer"
@@ -122,12 +158,19 @@ const Cart = () => {
             </button>
             {showAddress && (
               <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                <p
-                  onClick={() => setShowAddress(false)}
-                  className="text-gray-500 p-2 hover:bg-gray-100"
-                >
-                  New York, USA
-                </p>
+                {allUserAddresses?.map((value, index) => {
+                  return (
+                    <p
+                      onClick={() => {
+                        setShowAddress(false);
+                        setSelectedAddress(value);
+                      }}
+                      className="text-gray-500 p-2 hover:bg-gray-100"
+                    >
+                      {value.city + ", " + value.state + ", " + value.country}
+                    </p>
+                  );
+                })}
                 <p
                   onClick={() => {
                     setShowAddress(false);

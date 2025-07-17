@@ -156,7 +156,7 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
-  // get all cart items from database 
+  // get all cart items from database
   const getCartItemsFromDb = async () => {
     if (user) {
       try {
@@ -174,8 +174,6 @@ const AppContextProvider = ({ children }) => {
       }
     }
   };
-
-  console.log(cartItems);
 
   useEffect(() => {
     getCartItemsFromDb();

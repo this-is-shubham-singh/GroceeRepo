@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import sellerRouter from "./routes/sellerRoutes.js";
 import productRouter from "./routes/productRoutes.js";
+import addressRouter from "./routes/addressRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use(
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/product", productRouter);
+app.use("/api/address", addressRouter);
 
 // dummy route
 app.get("/", (req, res) => {

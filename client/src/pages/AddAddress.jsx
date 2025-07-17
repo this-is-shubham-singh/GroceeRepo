@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../App.css";
 import { assets } from "../assets/assets/";
+import { AppContext } from "../context/AppContextProvider";
+import { toast } from "react-toastify";
 
 export default function AddAddress() {
+  const { axios } = useContext(AppContext);
+
   const [addressData, setAddressData] = useState({
     firstName: "",
     lastName: "",
@@ -24,8 +28,20 @@ export default function AddAddress() {
     });
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+
+    try {
+      const { data } = await axios.post("address/addAddress", { addressData });
+
+      if (!data.success) {
+        return toast.error(data.message);
+      }
+
+      toast.success("address added successfully");
+    } catch (e) {
+      console.log(e.message);
+    }
   }
 
   console.log(addressData);
