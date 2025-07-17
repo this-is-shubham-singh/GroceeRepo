@@ -7,6 +7,7 @@ import cors from "cors";
 import sellerRouter from "./routes/sellerRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import addressRouter from "./routes/addressRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -31,6 +32,7 @@ app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/product", productRouter);
 app.use("/api/address", addressRouter);
+app.use("/api/order", orderRouter);
 
 // dummy route
 app.get("/", (req, res) => {
