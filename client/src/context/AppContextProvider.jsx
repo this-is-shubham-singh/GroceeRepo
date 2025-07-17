@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { dummyProducts } from "../assets/assets";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // set global base url for axios
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
@@ -134,22 +135,61 @@ const AppContextProvider = ({ children }) => {
 
       setAllProducts(arr);
       setLoading(false);
-
-      console.log(arr)
     } catch (e) {
       console.log(e.message);
     }
   };
 
+  // api call to update cart to database
+  const updateCartItemsToDb = async () => {
+    if (user) {
+      try {
+        const { data } = await axios.post("user/addToCart", { cartItems });
+
+        if (data.success == false) {
+          toast.error(data.message);
+          return;
+        }
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+  };
+
+  // get all cart items from database 
+  const getCartItemsFromDb = async () => {
+    if (user) {
+      try {
+        const { data } = await axios.get("user/getAllCartItems");
+
+        if (data.success == false) {
+          toast.error(data.message);
+          return;
+        }
+
+        setCartItems(data.cartData);
+        addcartItemToArray(data.cartData);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+  };
+
+  console.log(cartItems);
+
   useEffect(() => {
-    fetchAllProductsFromDb();
-  }, []);
+    getCartItemsFromDb();
+  }, [user]);
+
+  useEffect(() => {
+    updateCartItemsToDb();
+  }, [cartItems]);
 
   useEffect(() => {
     authenticateUser();
     authenticateSeller();
+    fetchAllProductsFromDb();
   }, []);
-
 
   let value = {
     user,

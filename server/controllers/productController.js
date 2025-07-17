@@ -44,8 +44,30 @@ const getAllProducts = async (req, res) => {
 
 const updateStock = async (req, res) => {
   try {
+    const { id, checkedValue } = req.body;
+
+    if (!id || (checkedValue != true && checkedValue != false)) {
+      return res.json({
+        success: false,
+        message: "invalid or missing id or checkedvalue",
+      });
+    }
+
+    const response = await Product.findByIdAndUpdate(
+      id,
+      {
+        inStock: checkedValue,
+      },
+      { new: true }
+    );
+
+    if (!response) {
+      return res.json({ success: false, message: "product not found" });
+    }
+
+    return res.json({ success: true, message: "stock updated" });
   } catch (e) {
     return res.json({ success: false, message: e.message });
   }
 };
-export { addProduct, getAllProducts };
+export { addProduct, getAllProducts, updateStock };

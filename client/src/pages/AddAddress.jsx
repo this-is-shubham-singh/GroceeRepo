@@ -1,10 +1,34 @@
+import { useState } from "react";
 import "../App.css";
 import { assets } from "../assets/assets/";
 
 export default function AddAddress() {
+  const [addressData, setAddressData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    country: "",
+    phone: "",
+  });
+
+  const updateAddressData = (e) => {
+    let value = e.target.value;
+    let nameValue = e.target.name;
+
+    setAddressData((existing) => {
+      return { ...existing, [nameValue]: value };
+    });
+  };
+
   function handleSubmit(e) {
     e.preventDefault();
   }
+
+  console.log(addressData);
 
   return (
     <div className="add-address-wrapper">
@@ -13,15 +37,69 @@ export default function AddAddress() {
       <div className="add-address-content">
         {/* Left - FORM */}
         <form onSubmit={(e) => handleSubmit(e)} className="address-form">
-          <input type="text" name="firstName" placeholder="First Name" />
-          <input type="text" name="lastName" placeholder="Last Name" />
-          <input type="email" name="email" placeholder="Email Address" />
-          <input type="text" name="street" placeholder="Street" />
-          <input type="text" name="city" placeholder="City" />
-          <input type="text" name="state" placeholder="State" />
-          <input type="text" name="zipcode" placeholder="Zipcode" />
-          <input type="text" name="country" placeholder="Country" />
-          <input type="tel" name="phone" placeholder="Phone" />
+          <input
+            type="text"
+            value={addressData.firstName}
+            onChange={(e) => updateAddressData(e)}
+            name="firstName"
+            placeholder="First Name"
+          />
+          <input
+            type="text"
+            value={addressData.lastName}
+            onChange={(e) => updateAddressData(e)}
+            name="lastName"
+            placeholder="Last Name"
+          />
+          <input
+            type="email"
+            value={addressData.email}
+            onChange={(e) => updateAddressData(e)}
+            name="email"
+            placeholder="Email Address"
+          />
+          <input
+            type="text"
+            value={addressData.street}
+            onChange={(e) => updateAddressData(e)}
+            name="street"
+            placeholder="Street"
+          />
+          <input
+            type="text"
+            value={addressData.city}
+            onChange={(e) => updateAddressData(e)}
+            name="city"
+            placeholder="City"
+          />
+          <input
+            type="text"
+            value={addressData.state}
+            onChange={(e) => updateAddressData(e)}
+            name="state"
+            placeholder="State"
+          />
+          <input
+            type="text"
+            value={addressData.zipcode}
+            onChange={(e) => updateAddressData(e)}
+            name="zipcode"
+            placeholder="Zipcode"
+          />
+          <input
+            type="text"
+            value={addressData.country}
+            onChange={(e) => updateAddressData(e)}
+            name="country"
+            placeholder="Country"
+          />
+          <input
+            type="tel"
+            value={addressData.phone}
+            onChange={(e) => updateAddressData(e)}
+            name="phone"
+            placeholder="Phone"
+          />
 
           <button type="submit" className="save-btn">
             Save Address

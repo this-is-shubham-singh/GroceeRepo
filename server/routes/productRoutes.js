@@ -2,6 +2,7 @@ import express from "express";
 import {
   addProduct,
   getAllProducts,
+  updateStock,
 } from "../controllers/productController.js";
 import { upload } from "../config/multer.js";
 import sellerAuth from "../middlewares/sellerAuth.js";
@@ -15,5 +16,6 @@ productRouter.post(
 );
 
 productRouter.get("/getAllProducts", getAllProducts);
+productRouter.post("/updateStock", sellerAuth, updateStock);
 
 export default productRouter;

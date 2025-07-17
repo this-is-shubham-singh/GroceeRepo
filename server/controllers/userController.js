@@ -108,4 +108,60 @@ const isUser = async (req, res) => {
   }
 };
 
-export { userLogin, userRegister, userLogout, isUser };
+const addToCart = async (req, res) => {
+  try {
+    const { cartItems } = req.body;
+    const { id } = req.user;
+
+    if (!id) {
+      return res.json({ success: false, message: "unauthorized user" });
+    }
+
+    const response = await User.findByIdAndUpdate(
+      id,
+      {
+        cartItems,
+      },
+      { new: true }
+    );
+
+    if (!response) {
+      return res.json({ success: false, message: "user not found" });
+    }
+
+    return res.json({ success: true, message: "cart updated" });
+  } catch (e) {
+    return res.json({ success: false, message: e.message });
+  }
+};
+
+const getAllCartItems = async (req, res) => {
+  try {
+    const { id } = req.user;
+    if (!id) {
+      return res.json({ success: false, message: "unauthorized user" });
+    }
+
+    const response = await User.findById(id);
+    if (!response) {
+      return res.json({ success: false, message: "user not found" });
+    }
+
+    return res.json({
+      success: true,
+      message: "cart item recieved successfully",
+      cartData: response.cartItems,
+    });
+  } catch (e) {
+    return res.json({ success: false, message: e.message });
+  }
+};
+
+export {
+  userLogin,
+  userRegister,
+  userLogout,
+  isUser,
+  addToCart,
+  getAllCartItems,
+};

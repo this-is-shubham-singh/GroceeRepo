@@ -1,35 +1,29 @@
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContextProvider";
+import { toast } from "react-toastify";
 
 const SellerProductsList = () => {
-  const { allProducts } = useContext(AppContext);
+  const { allProducts, axios } = useContext(AppContext);
 
-  const products = [
-    {
-      name: "Nike Pegasus 41 shoes",
-      category: "Shoes",
-      offerPrice: 999,
-      inStock: true,
-      image:
-        "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage.png",
-    },
-    {
-      name: "Nike Pegasus 41 shoes",
-      category: "Shoes",
-      offerPrice: 999,
-      inStock: false,
-      image:
-        "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage2.png",
-    },
-    {
-      name: "Nike Pegasus 41 shoes",
-      category: "Shoes",
-      offerPrice: 999,
-      inStock: true,
-      image:
-        "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage3.png",
-    },
-  ];
+  async function changeStock(e, id) {
+    const checkedValue = e.target.checked;
+
+    try {
+      const { data } = await axios.post("product/updateStock", {
+        id,
+        checkedValue,
+      });
+
+      // if (!data.success) {
+      //   toast.error(data.message);
+      //   return;
+      // }
+
+      toast.success("stock updated");
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
 
   return (
     <div className="flex-1 py-10 flex flex-col justify-between">
@@ -72,6 +66,7 @@ const SellerProductsList = () => {
                         type="checkbox"
                         className="sr-only peer"
                         defaultChecked={product.inStock}
+                        onChange={(e) => changeStock(e, product._id)}
                       />
                       <div className="w-12 h-7 bg-slate-300 rounded-full peer peer-checked:bg-blue-600 transition-colors duration-200"></div>
                       <span className="dot absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>

@@ -12,9 +12,6 @@ const Cart = () => {
   //   addcartItemToArray();
   // }, [cartItems]);
 
-  console.log(cartItemsInArray);
-  console.log("cartItem", cartItems);
-
   return (
     <div className="flex flex-col md:flex-row py-16 max-w-6xl w-full px-6 mx-auto">
       <div className="flex-1 max-w-4xl">
@@ -86,7 +83,10 @@ const Cart = () => {
           </div>
         ))}
 
-        <button onClick={() => navigate("/products")} className="group cursor-pointer flex items-center mt-8 gap-2 text-indigo-500 font-medium">
+        <button
+          onClick={() => navigate("/products")}
+          className="group cursor-pointer flex items-center mt-8 gap-2 text-indigo-500 font-medium"
+        >
           <svg
             width="15"
             height="11"
