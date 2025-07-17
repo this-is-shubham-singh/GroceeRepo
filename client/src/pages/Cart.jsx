@@ -12,6 +12,7 @@ const Cart = () => {
     deleteFromCart,
     cartItems,
     axios,
+    calculateTotalAmount,
   } = useContext(AppContext);
   const navigate = useNavigate();
   const [allUserAddresses, setAllUserAddresses] = useState([]);
@@ -205,11 +206,13 @@ const Cart = () => {
           </p>
           <p className="flex justify-between">
             <span>Tax (2%)</span>
-            <span>$20</span>
+            <span>${(calculateTotalAmount() * 2) / 100}</span>
           </p>
           <p className="flex justify-between text-lg font-medium mt-3">
             <span>Total Amount:</span>
-            <span>$20</span>
+            <span>
+              ${calculateTotalAmount() + (calculateTotalAmount() * 2) / 100}
+            </span>
           </p>
         </div>
 

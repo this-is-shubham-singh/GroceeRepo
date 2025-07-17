@@ -125,6 +125,19 @@ const AppContextProvider = ({ children }) => {
     return count;
   };
 
+  const calculateTotalAmount = () => {
+    let totalAmount = 0;
+
+    cartItemsInArray.forEach((element) => {
+      let perItemAmount = element.offerPrice * element.quantity;
+      totalAmount += perItemAmount;
+    });
+
+    return totalAmount;
+  };
+
+  console.log(cartItemsInArray);
+
   const fetchAllProductsFromDb = async () => {
     setLoading(true);
     try {
@@ -209,6 +222,7 @@ const AppContextProvider = ({ children }) => {
     setAllProducts,
     loading,
     setLoading,
+    calculateTotalAmount,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

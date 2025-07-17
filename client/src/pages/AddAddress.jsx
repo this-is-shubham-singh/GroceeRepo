@@ -3,9 +3,11 @@ import "../App.css";
 import { assets } from "../assets/assets/";
 import { AppContext } from "../context/AppContextProvider";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function AddAddress() {
   const { axios } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const [addressData, setAddressData] = useState({
     firstName: "",
@@ -39,6 +41,7 @@ export default function AddAddress() {
       }
 
       toast.success("address added successfully");
+      navigate("/cart");
     } catch (e) {
       console.log(e.message);
     }
