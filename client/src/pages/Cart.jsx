@@ -2,21 +2,36 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContextProvider";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useMemo } from "react";
 
 const Cart = () => {
   const [showAddress, setShowAddress] = useState(false);
   const {
     user,
     cartItemsInArray,
-    addcartItemToArray,
     deleteFromCart,
-    cartItems,
+    setCartItems,
+    setCartItemsInArray,
     axios,
     calculateTotalAmount,
+    cartItems,
   } = useContext(AppContext);
   const navigate = useNavigate();
   const [allUserAddresses, setAllUserAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState({});
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [items, setItems] = useState([]);
+
+  const { price, taxAmount, totalAmount } = useMemo(() => {
+    let total = calculateTotalAmount();
+    let taxAmount = (total * 2) / 100;
+
+    return {
+      taxAmount,
+      totalAmount: total + taxAmount,
+      price: total,
+    };
+  }, [cartItemsInArray]);
 
   const getAllAddresses = async () => {
     if (user) {
@@ -34,6 +49,59 @@ const Cart = () => {
       }
     }
   };
+
+  const placeOrderWithCod = async () => {
+    if (Object.keys(selectedAddress).length === 0) {
+      return toast.error("add or select an address");
+    }
+    if (items.length == 0) {
+      return toast.error("select items to order");
+    }
+
+    if (paymentMethod == "COD") {
+      try {
+        const { data } = await axios.post("order/placeOrderCod", {
+          amount: totalAmount,
+          addressId: selectedAddress._id,
+          paymentMethod,
+          items,
+        });
+
+        if (!data.success) {
+          toast.error(data.message);
+          return;
+        }
+
+        toast.success(data.message);
+
+        // empty cart items
+        navigate("/myOrders");
+        setCartItems({});
+        setCartItemsInArray([]);
+      } catch (e) {
+        console.log(e.message);
+      }
+    } else if (paymentMethod == "Online") {
+      console.log("online payment method selected");
+    }
+  };
+
+  function cartItemsToItem() {
+    if (!cartItemsInArray) {
+      return;
+    }
+
+    let arr = cartItemsInArray?.map((element, index) => ({
+      productId: element.id,
+      quantity: element.quantity,
+    }));
+
+    setItems(arr);
+  }
+
+  useEffect(() => {
+    cartItemsToItem();
+  }, [cartItemsInArray]);
 
   useEffect(() => {
     getAllAddresses();
@@ -187,7 +255,10 @@ const Cart = () => {
 
           <p className="text-sm font-medium uppercase mt-6">Payment Method</p>
 
-          <select className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none">
+          <select
+            onChange={(e) => setPaymentMethod(e.target.value)}
+            className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none"
+          >
             <option value="COD">Cash On Delivery</option>
             <option value="Online">Online Payment</option>
           </select>
@@ -198,7 +269,7 @@ const Cart = () => {
         <div className="text-gray-500 mt-4 space-y-2">
           <p className="flex justify-between">
             <span>Price</span>
-            <span>$20</span>
+            <span>${price}</span>
           </p>
           <p className="flex justify-between">
             <span>Shipping Fee</span>
@@ -206,17 +277,18 @@ const Cart = () => {
           </p>
           <p className="flex justify-between">
             <span>Tax (2%)</span>
-            <span>${(calculateTotalAmount() * 2) / 100}</span>
+            <span>${taxAmount}</span>
           </p>
           <p className="flex justify-between text-lg font-medium mt-3">
             <span>Total Amount:</span>
-            <span>
-              ${calculateTotalAmount() + (calculateTotalAmount() * 2) / 100}
-            </span>
+            <span>${totalAmount}</span>
           </p>
         </div>
 
-        <button className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
+        <button
+          onClick={() => placeOrderWithCod()}
+          className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition"
+        >
           Place Order
         </button>
       </div>

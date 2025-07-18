@@ -92,6 +92,12 @@ const SellerSidebar = () => {
           />
         </NavLink>
         <div className="flex items-center gap-5 text-gray-500">
+          <NavLink
+            to={"/"}
+            className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer`}
+          >
+            User
+          </NavLink>
           <p>Hi! Admin</p>
           <button
             style={{ cursor: "pointer" }}

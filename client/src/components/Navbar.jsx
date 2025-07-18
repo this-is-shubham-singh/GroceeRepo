@@ -146,7 +146,7 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-md border border-gray-200 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition duration-200 z-10 pointer-events-auto">
               <button
                 className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
-                onClick={() => console.log("My Orders")}
+                onClick={() => navigate("/myOrders")}
               >
                 My Orders
               </button>

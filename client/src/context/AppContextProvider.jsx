@@ -136,8 +136,6 @@ const AppContextProvider = ({ children }) => {
     return totalAmount;
   };
 
-  console.log(cartItemsInArray);
-
   const fetchAllProductsFromDb = async () => {
     setLoading(true);
     try {
@@ -188,6 +186,7 @@ const AppContextProvider = ({ children }) => {
     }
   };
 
+
   useEffect(() => {
     getCartItemsFromDb();
   }, [user]);
@@ -223,6 +222,9 @@ const AppContextProvider = ({ children }) => {
     loading,
     setLoading,
     calculateTotalAmount,
+    cartItems,
+    setCartItems,
+    setCartItemsInArray
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

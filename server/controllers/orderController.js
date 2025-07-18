@@ -20,7 +20,7 @@ const placeOrderCod = async (req, res) => {
 
     const { items, addressId, paymentMethod, amount } = req.body;
     if (!items || !addressId || !paymentMethod || !amount) {
-      return res.json({ success: true, message: "invalid details" });
+      return res.json({ success: false, message: "invalid details" });
     }
 
     // AMOUNT CALCULATION
@@ -59,7 +59,6 @@ const getAllOrders = async (req, res) => {
     }
 
     const response = await Order.find({ userId: id })
-      .populate("items.productId")
       .populate("userId")
       .populate("addressId");
     if (!response) {
@@ -82,4 +81,23 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-export { placeOrderCod, getAllOrders };
+const getAllUsersOrder = async (req, res) => {
+  try {
+    const response = await Order.find({})
+      .populate("userId")
+      .populate("addressId");
+    if (!response) {
+      return res.json({ success: false, message: "no orders exist" });
+    }
+
+    return res.json({
+      success: true,
+      message: "orders of all users",
+      allOrders: response,
+    });
+  } catch (e) {
+    return res.json({ success: false, message: e.message });
+  }
+};
+
+export { placeOrderCod, getAllOrders, getAllUsersOrder };
