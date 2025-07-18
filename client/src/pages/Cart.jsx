@@ -123,60 +123,70 @@ const Cart = () => {
           <p className="text-center">Action</p>
         </div>
 
-        {cartItemsInArray?.map((product, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
+        {cartItemsInArray.length == 0 ? (
+          <h1
+            style={{ textAlign: "center", fontSize: "25px", marginTop: "60px" }}
           >
-            <div className="flex items-center md:gap-6 gap-3">
-              <div className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
-                <img
-                  className="max-w-full h-full object-cover"
-                  src={product.image}
-                  alt={product.name}
-                />
-              </div>
-              <div>
-                <p className="hidden md:block font-semibold">{product.name}</p>
-                <div className="font-normal text-gray-500/70">
-                  <p>
-                    Size: <span>{product.size || "N/A"}</span>
+            No Items In Cart...
+          </h1>
+        ) : (
+          cartItemsInArray?.map((product, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
+            >
+              <div className="flex items-center md:gap-6 gap-3">
+                <div className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
+                  <img
+                    className="max-w-full h-full object-cover"
+                    src={product.image}
+                    alt={product.name}
+                  />
+                </div>
+                <div>
+                  <p className="hidden md:block font-semibold">
+                    {product.name}
                   </p>
-                  <div className="flex items-center">
-                    <p>Qty: </p>
-                    <p style={{ marginLeft: "4px" }} className="outline-none">
-                      {" "}
-                      {product.quantity}
+                  <div className="font-normal text-gray-500/70">
+                    <p>
+                      Size: <span>{product.size || "N/A"}</span>
                     </p>
+                    <div className="flex items-center">
+                      <p>Qty: </p>
+                      <p style={{ marginLeft: "4px" }} className="outline-none">
+                        {" "}
+                        {product.quantity}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <p className="text-center">
-              ${product.offerPrice * product.quantity}
-            </p>
-            <button
-              onClick={() => deleteFromCart(product.id)}
-              className="cursor-pointer mx-auto"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <p className="text-center">
+                ${product.offerPrice * product.quantity}
+              </p>
+              <button
+                onClick={() => deleteFromCart(product.id)}
+                className="cursor-pointer mx-auto"
               >
-                <path
-                  d="m12.5 7.5-5 5m0-5 5 5m5.833-2.5a8.333 8.333 0 1 1-16.667 0 8.333 8.333 0 0 1 16.667 0"
-                  stroke="#FF532E"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-        ))}
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m12.5 7.5-5 5m0-5 5 5m5.833-2.5a8.333 8.333 0 1 1-16.667 0 8.333 8.333 0 0 1 16.667 0"
+                    stroke="#FF532E"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          ))
+        )}
 
         <button
           onClick={() => navigate("/products")}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { AppContext } from "../../context/AppContextProvider";
 import { toast } from "react-toastify";
+import { assets } from "../../assets/assets";
 
 const SellerSidebar = () => {
   const { axios, setSeller } = useContext(AppContext);
@@ -85,11 +86,7 @@ const SellerSidebar = () => {
     <>
       <div className="flex items-center justify-between px-4 md:px-8 border-b border-gray-300 py-3 bg-white transition-all duration-300">
         <NavLink to={"/"}>
-          <img
-            className="h-9"
-            src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/dummyLogo/dummyLogoColored.svg"
-            alt="dummyLogoColored"
-          />
+          <img src={assets.companyLogo} style={{ width: "70px" }} />
         </NavLink>
         <div className="flex items-center gap-5 text-gray-500">
           <NavLink

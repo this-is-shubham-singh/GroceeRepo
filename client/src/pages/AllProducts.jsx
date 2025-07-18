@@ -44,9 +44,9 @@ const AllProducts = () => {
         "loading..."
       ) : (
         <div className="categories-row">
-          {data?.map((cat) => (
-            <ProductCard product={cat} />
-          ))}
+          {data?.map((cat) => {
+            return cat.inStock && <ProductCard product={cat} />;
+          })}
         </div>
       )}
     </div>
