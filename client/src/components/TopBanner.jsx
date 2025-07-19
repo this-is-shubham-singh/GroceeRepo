@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "../app.css";
+import "../App.css";
 
 export default function TopBanner() {
   const navigate = useNavigate();
