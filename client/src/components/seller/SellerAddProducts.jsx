@@ -36,8 +36,6 @@ const SellerAddProducts = () => {
     try {
       const { data } = await axios.post("/api/product/addProduct", formData);
 
-      console.log(data);
-
       if (data.success == false) {
         toast.error(data.message);
         return;
@@ -67,8 +65,6 @@ const SellerAddProducts = () => {
       return { ...existingData, [e.target.name]: e.target.value };
     });
   }
-
-  // console.log(imageData);
 
   return (
     <div className="py-10 flex flex-col justify-between bg-white">

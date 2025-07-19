@@ -18,8 +18,6 @@ const SellerOrders = () => {
     getAllUsersOrder();
   }, []);
 
-  console.log("orders", orders);
-
   const boxIcon =
     "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/e-commerce/boxIcon.svg";
 

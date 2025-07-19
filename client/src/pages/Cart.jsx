@@ -42,7 +42,6 @@ const Cart = () => {
           return toast.error(e.message);
         }
 
-        // console.log(data.allAddresses)
         setAllUserAddresses(data.allAddresses);
       } catch (e) {
         console.log(e.message);
@@ -82,7 +81,7 @@ const Cart = () => {
         console.log(e.message);
       }
     } else if (paymentMethod == "Online") {
-      console.log("online payment method selected");
+      return toast.error("online payment not available")
     }
   };
 

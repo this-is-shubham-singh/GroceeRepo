@@ -47,8 +47,6 @@ export default function AddAddress() {
     }
   }
 
-  console.log(addressData);
-
   return (
     <div className="add-address-wrapper">
       <h2 className="add-address-heading">Add Shipping Address</h2>

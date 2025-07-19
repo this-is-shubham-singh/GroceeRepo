@@ -1,54 +1,54 @@
 import express from "express";
 import dotenv from "dotenv";
-import dbConnection from "./config/dbConnect.js";
-import userRouter from "./routes/userRoute.js";
+import path from "path";
+import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+
+// Routers
+import dbConnection from "./config/dbConnect.js";
+import userRouter from "./routes/userRoute.js";
 import sellerRouter from "./routes/sellerRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import addressRouter from "./routes/addressRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 
+// Set up __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const _dirname = path.dirname(__filename);
+
 dotenv.config();
 const app = express();
-
 const port = process.env.PORT || 3000;
 
-// db connection
+// DB Connection
 dbConnection();
 
-// setup middlewares
+// Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://gentle-gaufre-eef2f9.netlify.app/",
-];
-
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: ["http://localhost:5173"], // frontend during dev
     credentials: true,
   })
 );
-// mouting routes
+
+// Backend API routes
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
 app.use("/api/product", productRouter);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 
-// dummy route
-app.get("/", (req, res) => {
-  res.send("server running");
+app.use(express.static(path.join(_dirname, "../client/dist")));
+
+app.get("/*splat", (_, res) => {
+  res.sendFile(path.join(_dirname, "../client/dist/index.html"));
 });
 
+// Start the server
 app.listen(port, () => {
-  console.log("server running at" + port);
+  console.log("Server running at http://localhost:" + port);
 });

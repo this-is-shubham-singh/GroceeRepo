@@ -47,8 +47,6 @@ export default function MyOrders() {
     getOrders();
   }, []);
 
-  // console.log(orders);
-
   return (
     <div className="myorders-wrapper">
       <h2 className="myorders-heading">My Orders</h2>
@@ -77,7 +75,6 @@ export default function MyOrders() {
             {/* get product data from all prouducts  */}
 
             {order.items.map((product, i) => {
-              console.log(product);
               let productDetails = allProducts?.find((value, index) => {
                 return value._id === product.productId;
               });
