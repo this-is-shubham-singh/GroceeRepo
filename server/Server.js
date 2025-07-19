@@ -24,6 +24,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://grocee-frontend.onrender.com",
   "https://grocee-repo-k82k.vercel.app",
+  "https://gentle-gaufre-eef2f9.netlify.app/"
 ];
 
 app.use(
