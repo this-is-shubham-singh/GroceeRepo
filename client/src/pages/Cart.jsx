@@ -36,7 +36,7 @@ const Cart = () => {
   const getAllAddresses = async () => {
     if (user) {
       try {
-        const { data } = await axios("address/getAllAddress");
+        const { data } = await axios("/api/address/getAllAddress");
 
         if (!data.success) {
           return toast.error(e.message);
@@ -60,7 +60,7 @@ const Cart = () => {
 
     if (paymentMethod == "COD") {
       try {
-        const { data } = await axios.post("order/placeOrderCod", {
+        const { data } = await axios.post("/api/order/placeOrderCod", {
           amount: totalAmount,
           addressId: selectedAddress._id,
           paymentMethod,

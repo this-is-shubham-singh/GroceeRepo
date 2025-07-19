@@ -34,7 +34,7 @@ export default function AddAddress() {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("address/addAddress", { addressData });
+      const { data } = await axios.post("/api/address/addAddress", { addressData });
 
       if (!data.success) {
         return toast.error(data.message);

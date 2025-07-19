@@ -28,7 +28,7 @@ const AppContextProvider = ({ children }) => {
   // keep authenticating user
   const authenticateUser = async () => {
     try {
-      const { data } = await axios.get("user/userAuth");
+      const { data } = await axios.get("/api/user/userAuth");
       setUser(data.userData);
     } catch (e) {
       console.log(e.message);
@@ -37,7 +37,7 @@ const AppContextProvider = ({ children }) => {
 
   const authenticateSeller = async () => {
     try {
-      const { data } = await axios.get("seller/sellerAuth");
+      const { data } = await axios.get("/api/seller/sellerAuth");
       setSeller(data.success);
     } catch (e) {
       console.log(e.message);
@@ -139,7 +139,7 @@ const AppContextProvider = ({ children }) => {
   const fetchAllProductsFromDb = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("product/getAllProducts");
+      const { data } = await axios.get("/api/product/getAllProducts");
 
       // console.log(data.productData);
       let arr = [...dummyProducts, ...data.productData];
@@ -155,7 +155,7 @@ const AppContextProvider = ({ children }) => {
   const updateCartItemsToDb = async () => {
     if (user) {
       try {
-        const { data } = await axios.post("user/addToCart", { cartItems });
+        const { data } = await axios.post("/api/user/addToCart", { cartItems });
 
         if (data.success == false) {
           toast.error(data.message);
@@ -171,7 +171,7 @@ const AppContextProvider = ({ children }) => {
   const getCartItemsFromDb = async () => {
     if (user) {
       try {
-        const { data } = await axios.get("user/getAllCartItems");
+        const { data } = await axios.get("/api/user/getAllCartItems");
 
         if (data.success == false) {
           toast.error(data.message);

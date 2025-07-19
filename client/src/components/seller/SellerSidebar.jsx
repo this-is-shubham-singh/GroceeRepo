@@ -10,7 +10,7 @@ const SellerSidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const { data } = await axios.post("seller/sellerLogout");
+      const { data } = await axios.post("/api/seller/sellerLogout");
       setSeller(false);
       toast.success(data.success);
     } catch (e) {

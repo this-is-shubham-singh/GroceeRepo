@@ -36,7 +36,7 @@ export default function MyOrders() {
   const { axios, allProducts } = useContext(AppContext);
   const getOrders = async () => {
     try {
-      const { data } = await axios.get("order/getAllOrders");
+      const { data } = await axios.get("/api/order/getAllOrders");
       setOrders(data.allOrders);
     } catch (e) {
       console.log(e.message);

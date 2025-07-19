@@ -9,7 +9,7 @@ const SellerProductsList = () => {
     const checkedValue = e.target.checked;
 
     try {
-      const { data } = await axios.post("product/updateStock", {
+      const { data } = await axios.post("/api/product/updateStock", {
         id,
         checkedValue,
       });

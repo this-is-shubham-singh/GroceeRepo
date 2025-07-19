@@ -34,7 +34,7 @@ const SellerAddProducts = () => {
     }
 
     try {
-      const { data } = await axios.post("product/addProduct", formData);
+      const { data } = await axios.post("/api/product/addProduct", formData);
 
       console.log(data);
 

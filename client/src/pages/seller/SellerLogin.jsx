@@ -13,7 +13,7 @@ const SellerLogin = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post("seller/sellerLogin", {
+      const { data } = await axios.post("/api/seller/sellerLogin", {
         email,
         password,
       });

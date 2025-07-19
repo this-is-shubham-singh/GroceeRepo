@@ -7,7 +7,7 @@ const SellerOrders = () => {
 
   const getAllUsersOrder = async () => {
     try {
-      const { data } = await axios.get("order/getAllUsersOrder");
+      const { data } = await axios.get("/api/order/getAllUsersOrder");
       setOrders(data.allOrders);
     } catch (e) {
       console.log(e.message);
